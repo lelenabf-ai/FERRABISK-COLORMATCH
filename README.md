@@ -1,181 +1,67 @@
-# Color Match — Ferrabisk Arquitetura & Design
+# Color Match — o que mudou e como configurar
 
-Quiz interativo de paletas de cores para ambientes. O visitante responde
-20 perguntas e recebe, ao final, uma das **50 paletas** possíveis, com nome,
-descrição, três cores (com código HEX), uma referência de tinta e uma
-justificativa de uso. O resultado pode ser **baixado em PDF** e o visitante
-ainda pode abrir uma **pesquisa de imagens** de ambientes com aquela paleta.
+## O que mudou no quiz
 
-Tudo isso vive em **um único arquivo**: `color-match-quiz-completo.html`.
+1. **Paletas infinitas.** As cores agora são geradas por um algoritmo (matiz, saturação e
+   luminosidade calculados a partir das suas 20 respostas + a sequência exata das respostas
+   como "semente" de variação). Isso roda 100% no navegador — não depende de internet.
+   Duas pessoas com respostas parecidas ainda recebem tons ligeiramente diferentes.
+2. **Botões separados de Google e Pinterest** na tela de resultado, para ver ambientes
+   com a paleta gerada em cada uma das duas plataformas.
+3. **Removida** a informação "50 resultados possíveis" da tela inicial.
+4. **Link de analytics** (arquivo `color-match-analytics.html`), separado do quiz, que
+   mostra estatísticas agregadas de todas as respostas (cores mais comuns, distribuição
+   dos 4 eixos de gosto, referências de tinta mais indicadas, últimos resultados). Esse
+   arquivo não tem nenhum link a partir do quiz — só quem tiver o link consegue abrir.
 
----
+## Passo a passo para ativar o registro de dados (analytics)
 
-## Destaques
+O quiz sozinho não guarda nada — para acumular estatísticas de todo mundo que responde,
+ele precisa de um lugar online para salvar cada resultado. A opção mais simples e gratuita
+é o Google Sheets + Apps Script (não exige servidor nem conta paga).
 
-- **Arquivo único e autossuficiente** (~210 KB). Sem build, sem servidor, sem banco de dados.
-- **Funciona 100% offline.** O quiz e a geração do PDF não dependem de nenhuma biblioteca ou serviço externo.
-- **20 perguntas** (3 opções cada) e **50 paletas** de resultado.
-- **PDF do resultado** gerado por um motor próprio em JavaScript puro, com a logo da marca embutida e a mesma diagramação da tela.
-- **Tipografia da marca embutida** (Poppins e Bricolage Grotesque) — nada é buscado no Google Fonts.
-- **Único recurso online:** o botão "Ver ambientes com esta paleta", que abre uma pesquisa de imagens em nova aba (por design).
+**1. Crie a planilha e o backend**
+   - Crie uma planilha nova em [sheets.google.com](https://sheets.google.com).
+   - Menu **Extensões > Apps Script**.
+   - Apague o conteúdo padrão e cole o conteúdo do arquivo `Code.gs` (entregue junto).
+   - Clique em **Implantar > Nova implantação**.
+   - Tipo: **App da Web**. Executar como: **Eu**. Quem pode acessar: **Qualquer pessoa**.
+   - Implante, autorize as permissões pedidas, e copie a URL gerada (termina em `/exec`).
 
----
+**2. Conecte o quiz ao backend**
+   - Abra `color-match-quiz.html` num editor de texto.
+   - Procure por `ANALYTICS_ENDPOINT` (uma vez só, perto do fim do arquivo).
+   - Substitua `'COLE_AQUI_A_URL_DO_APPS_SCRIPT'` pela URL copiada no passo 1.
+   - Salve e publique o arquivo atualizado onde o quiz já está hospedado.
 
-## Como hospedar
+**3. Conecte o painel de analytics ao mesmo backend**
+   - Abra `color-match-analytics.html`.
+   - Procure por `ANALYTICS_ENDPOINT_DEFAULT` no início do `<script>`.
+   - Cole a mesma URL do passo 1.
+   - (Alternativa: se preferir não editar o arquivo, você pode colar a URL direto na
+     tela de bloqueio do painel toda vez que abrir — funciona também, só não fica salvo.)
 
-É um site estático. Basta enviar o arquivo `color-match-quiz-completo.html`
-para qualquer hospedagem estática (Hostinger, Netlify, Vercel, GitHub Pages,
-Cloudflare Pages, ou a hospedagem do seu próprio site).
+**4. Proteja o painel com senha**
+   - A senha de acesso já está configurada como `F3rr@b1sk`.
+   - O arquivo guarda só o hash (SHA-256) da senha, nunca o texto puro — então, mesmo que
+     alguém abra o código-fonte do arquivo, não vê a senha em si.
+   - Pra trocar a senha depois: gere o hash SHA-256 do novo texto (qualquer gerador
+     online de "SHA-256 hash" resolve, ou peça pra mim) e substitua o valor da constante
+     `PASSWORD_HASH` no início do `<script>`.
+   - A senha fica pedida uma vez por sessão do navegador (some se fechar a aba).
 
-1. Faça upload do arquivo.
-2. Acesse pela URL gerada.
-3. Pronto.
+**5. Mantenha o link do painel só com você**
+   - Hospede `color-match-analytics.html` num endereço que não seja linkado de nenhum
+     lugar público (nem do quiz, nem do seu site, nem do Instagram).
+   - Vale lembrar: por ser um arquivo estático (sem servidor de verdade por trás), essa
+     senha é uma camada de proteção razoável para o caso de uso, mas não substitui um
+     sistema de login real — é mais pra impedir acesso casual do que um ataque técnico
+     deliberado.
 
-Se quiser que ele seja a página principal, renomeie para `index.html`.
+## Sobre a referência de tinta
 
-**Recomendações**
-
-- Sirva por **HTTPS** (padrão em qualquer serviço moderno). Isso evita avisos do navegador e garante o funcionamento do download e do botão de imagens.
-- Para testar localmente, prefira um servidor simples a abrir o arquivo direto pelo `file://`. Exemplo, na pasta do arquivo:
-  ```
-  python3 -m http.server 8000
-  ```
-  e acesse `http://localhost:8000/color-match-quiz-completo.html`.
-
----
-
-## Como funciona (visão técnica)
-
-O HTML tem três telas controladas por exibição (`display`):
-
-- `intro-screen` — apresentação e botão de iniciar.
-- `quiz-screen` — uma pergunta por vez; a barra de progresso avança a cada resposta.
-- `result-screen` — a paleta final + botões de ação.
-
-Cada resposta soma pontos em quatro eixos internos (temperatura, intensidade,
-luminosidade e clássico↔ousado). Ao final, o perfil escolhido é o mais próximo
-do vetor de pontuação do visitante, dentro de um espaço calibrado para que as
-50 paletas sejam todas alcançáveis e bem distribuídas.
-
-O arquivo contém **três blocos `<script>`**, nesta ordem:
-
-1. **Gerador de PDF** (`FerrabiskPDF`) — motor próprio que monta o PDF (texto, retângulos, cantos arredondados e a logo) sem nenhuma biblioteca externa. Usa as fontes nativas do PDF (Helvetica), então nenhuma fonte precisa ser embutida no documento gerado.
-2. **Dados** — `questions` (as 20 perguntas e suas opções), `profiles` (as 50 paletas) e `profileVectors` (os vetores usados para escolher o resultado).
-3. **Lógica** — pontuação, escolha do perfil, renderização das telas, download do PDF e o botão de pesquisa de imagens.
-
----
-
-## Como editar o conteúdo
-
-Todo o conteúdo editável está no **bloco de dados** (o segundo `<script>`).
-
-### Perguntas
-
-Procure por `const questions = [`. Cada pergunta tem um enunciado e uma lista de
-opções; cada opção carrega os pontos que soma nos eixos. O layout se adapta
-automaticamente ao número de opções, então dá para ajustar textos livremente.
-
-### Paletas (resultados)
-
-Procure por `const profiles = {`. Cada paleta segue este formato:
-
-```js
-chave_do_perfil: {
-  name: "Nome da paleta",
-  eyebrowColor: "#B5562F",          // cor do rótulo "SEU RESULTADO"
-  desc: "Descrição do perfil...",
-  colors: [
-    { hex: "#B5562F", name: "Terracota" },
-    { hex: "#2E1B12", name: "Marrom escuro" },
-    { hex: "#E0CBB0", name: "Areia clara" }
-  ],
-  paint: "Suvinil — família ..., tom ...",  // referência de tinta
-  why: "Quando/como usar esta paleta..."
-}
-```
-
-> No PDF e na tela, a cor do texto sobre cada amostra é escolhida automaticamente
-> (clara ou escura) conforme a luminosidade da cor — não é preciso configurar isso.
-
-### Textos da marca / cabeçalho
-
-O título "Color Match" e o subtítulo "FERRABISK ARQUITETURA & DESIGN" aparecem
-tanto na tela quanto no PDF. Na tela, ficam no HTML das telas; no PDF, dentro da
-função `downloadResult` (no terceiro `<script>`).
-
-### Cores da identidade
-
-No topo do CSS (`:root`) ficam as variáveis da marca:
-
-| Variável        | Valor     | Uso                         |
-|-----------------|-----------|-----------------------------|
-| `--terracota`   | `#B5562F` | destaques e detalhes        |
-| `--marrom`      | `#332420` | títulos / botão principal   |
-| `--texto`       | `#4A3D30` | texto corrido               |
-| `--texto-claro` | `#8C7560` | textos secundários          |
-| `--marfim`      | `#F4EEE3` | fundo da página             |
-
-Alterando esses valores, a identidade muda em todo o quiz.
-
-> **Atenção:** o fundo do cabeçalho do **PDF** e o fundo atrás da **logo** usam o
-> tom marfim `#F4EEE3` fixado no código (a logo foi achatada sobre esse fundo para
-> ficar perfeita no PDF). Se você mudar `--marfim`, ajuste também esses pontos na
-> função `downloadResult` para manter o casamento das cores.
-
----
-
-## O download em PDF
-
-- Gerado inteiramente no navegador, **sem internet**.
-- Reproduz a diagramação da tela: cabeçalho com logo, card branco, amostras de cor, referência de tinta, justificativa em itálico e aviso final.
-- Nome do arquivo: `color-match-<nome-da-paleta>.pdf`.
-- Formato A4, com acentuação do português e travessões corretos.
-
-Se o navegador do visitante for muito antigo e não conseguir gerar o arquivo,
-aparece um aviso amigável em vez de falhar silenciosamente.
-
----
-
-## O botão de pesquisa de imagens
-
-Na tela de resultado, o botão **"Ver ambientes com esta paleta"** abre, em uma
-**nova aba**, uma busca de imagens (Google Imagens) montada a partir do nome da
-paleta + as cores + "decoração de interiores".
-
-Este é o **único** ponto do projeto que acessa a internet. Todo o restante
-funciona offline.
-
----
-
-## Privacidade
-
-- Não há rastreamento, cookies, formulários de captura ou envio de dados.
-- Nada é armazenado: ao recarregar a página, o quiz recomeça.
-- A única requisição externa possível é o clique voluntário no botão de imagens.
-
----
-
-## Compatibilidade
-
-Funciona nos navegadores atuais de desktop e celular (Chrome, Edge, Firefox,
-Safari). O download de PDF usa recursos amplamente suportados; em navegadores
-muito antigos pode não estar disponível, mas o quiz em si continua funcionando.
-
----
-
-## Observação sobre as referências de tinta
-
-As referências de tinta indicadas são **aproximações** com base em catálogos
-públicos. Não existe correspondência exata entre cor digital e tinta física —
-o próprio resultado recomenda testar a cor no ambiente antes de pintar. Caso
-você tenha os códigos oficiais atualizados de uma marca específica, é só
-substituir o campo `paint` de cada paleta.
-
----
-
-## Estrutura de arquivos
-
-```
-color-match-quiz-completo.html   → o quiz completo (é só isto que precisa ser publicado)
-README.md                        → este documento
-```
+Como a cor agora é gerada ponto a ponto (e não escolhida entre um conjunto fixo), a
+"referência de tinta" mostrada é a cor mais próxima dentro de um banco de ~130 tons de
+referência (extraídos das famílias Suvinil já usadas antes). O texto já deixa isso claro
+como aproximação — igual acontecia antes, só que agora a cor exata gerada também aparece
+ao lado, para quem for pedir a tinta sob medida numa loja.
