@@ -289,102 +289,122 @@ const questions = [
   { text: "Sua casa pede mais:", options: [
     { label: "Aconchego", temp: 2, intn: 0, lum: 0, classico: 1 },
     { label: "Sofisticação", temp: -1, intn: 1, lum: 0, classico: 0 },
-    { label: "Energia e vida", temp: 1, intn: 2, lum: 1, classico: -1 }
+    { label: "Energia e vida", temp: 1, intn: 2, lum: 1, classico: -1 },
+    { label: "Serenidade e leveza", temp: -1, intn: -1, lum: 1, classico: 0 }
   ]},
   { text: "Como é a luz natural do ambiente?", options: [
     { label: "Muita luz, o dia inteiro", temp: 0, intn: 1, lum: 1, classico: 0 },
     { label: "Pouca luz, mais escuro", temp: 0, intn: -1, lum: -1, classico: 0 },
-    { label: "Luz média, equilibrada", temp: 0, intn: 0, lum: 0, classico: 0 }
+    { label: "Luz média, equilibrada", temp: 0, intn: 0, lum: 0, classico: 0 },
+    { label: "Ambiente fechado, luz mais artificial", temp: -1, intn: 0, lum: -1, classico: -1 }
   ]},
   { text: "Você ousaria em uma parede colorida?", options: [
     { label: "Sim, adoraria", temp: 0, intn: 2, lum: 0, classico: 0 },
     { label: "Prefiro tons neutros", temp: 0, intn: -2, lum: 0, classico: 0 },
-    { label: "Talvez um tom médio, sem exageros", temp: 0, intn: 0, lum: 0, classico: 1 }
+    { label: "Talvez um tom médio, sem exageros", temp: 0, intn: 0, lum: 0, classico: 1 },
+    { label: "Prefiro textura ou papel de parede a cor lisa", temp: 0, intn: 1, lum: 0, classico: -1 }
   ]},
   { text: "Que estilo de móveis combina com você?", options: [
     { label: "Madeira, rústico, orgânico", temp: 1, intn: 0, lum: 0, classico: 1 },
     { label: "Metal, linhas retas, moderno", temp: -1, intn: 0, lum: 0, classico: -1 },
-    { label: "Mix de épocas e peças de garimpo", temp: 0, intn: 1, lum: -1, classico: 0 }
+    { label: "Mix de épocas e peças de garimpo", temp: 0, intn: 1, lum: -1, classico: 0 },
+    { label: "Estofados macios, formas orgânicas contemporâneas", temp: 0, intn: 0, lum: 1, classico: -1 }
   ]},
   { text: "Qual cor te faz bem só de olhar?", options: [
     { label: "Terracota, mostarda, vinho", temp: 2, intn: 0, lum: 0, classico: 0 },
     { label: "Verde, azul, cinza", temp: -1, intn: 0, lum: 0, classico: 0 },
-    { label: "Rosa, lilás, pêssego", temp: 0, intn: 1, lum: 1, classico: -1 }
+    { label: "Rosa, lilás, pêssego", temp: 0, intn: 1, lum: 1, classico: -1 },
+    { label: "Preto, branco e neutros absolutos", temp: 0, intn: -1, lum: 0, classico: -1 }
   ]},
   { text: "Em um fim de tarde, você prefere:", options: [
     { label: "Luz quente e baixa, tipo velas", temp: 2, intn: -1, lum: -1, classico: 1 },
     { label: "Luz branca e ambiente iluminado", temp: -1, intn: 0, lum: 1, classico: -1 },
-    { label: "Penumbra colorida, com abajur âmbar", temp: 1, intn: 1, lum: -1, classico: 0 }
+    { label: "Penumbra colorida, com abajur âmbar", temp: 1, intn: 1, lum: -1, classico: 0 },
+    { label: "Penumbra fria e silenciosa, sem estímulos", temp: -1, intn: -1, lum: -1, classico: 0 }
   ]},
   { text: "Seu closet/guarda-roupa tem mais:", options: [
     { label: "Tons terrosos e neutros", temp: 1, intn: -1, lum: 0, classico: 1 },
     { label: "Cores vivas e estampas", temp: 0, intn: 2, lum: 0, classico: -1 },
-    { label: "Preto, branco e cinza", temp: -1, intn: -1, lum: 0, classico: 0 }
+    { label: "Preto, branco e cinza", temp: -1, intn: -1, lum: 0, classico: 0 },
+    { label: "Tons pastéis e delicados", temp: 0, intn: 0, lum: 1, classico: 0 }
   ]},
   { text: "Qual ambiente te atrai mais visualmente?", options: [
     { label: "Café aconchegante, madeira e tecido", temp: 2, intn: 0, lum: -1, classico: 1 },
     { label: "Galeria de arte, branco e concreto", temp: -2, intn: 0, lum: 1, classico: -1 },
-    { label: "Jardim botânico, verde e luz", temp: -1, intn: 1, lum: 1, classico: 0 }
+    { label: "Jardim botânico, verde e luz", temp: -1, intn: 1, lum: 1, classico: 0 },
+    { label: "Loft industrial, tijolo aparente e metal", temp: 0, intn: 0, lum: -1, classico: -1 }
   ]},
   { text: "Como você descreveria seu humor na maior parte do tempo?", options: [
     { label: "Calmo, contemplativo", temp: 0, intn: -1, lum: -1, classico: 0 },
     { label: "Animado, expressivo", temp: 0, intn: 2, lum: 1, classico: 0 },
-    { label: "Focado e prático", temp: -1, intn: 0, lum: 0, classico: 0 }
+    { label: "Focado e prático", temp: -1, intn: 0, lum: 0, classico: 0 },
+    { label: "Sonhador e sensível", temp: 0, intn: 0, lum: 1, classico: -1 }
   ]},
   { text: "Pensando em uma viagem dos sonhos, você escolheria:", options: [
     { label: "Toscana ou Marrocos — terra, sol, especiarias", temp: 2, intn: 1, lum: 0, classico: 1 },
     { label: "Escandinávia ou Islândia — frio, clean, minimal", temp: -2, intn: -1, lum: 1, classico: -1 },
-    { label: "Trópicos — praia, verde e cor", temp: 0, intn: 2, lum: 1, classico: -1 }
+    { label: "Trópicos — praia, verde e cor", temp: 0, intn: 2, lum: 1, classico: -1 },
+    { label: "Grandes metrópoles, museus e arquitetura", temp: -1, intn: 0, lum: 0, classico: 0 }
   ]},
   { text: "Sua bebida preferida tem mais a ver com:", options: [
     { label: "Vinho tinto, café, chocolate amargo", temp: 1, intn: 1, lum: -1, classico: 1 },
     { label: "Chá verde, água com limão, drinks claros", temp: -1, intn: -1, lum: 1, classico: -1 },
-    { label: "Sucos de frutas vibrantes", temp: 1, intn: 2, lum: 1, classico: -1 }
+    { label: "Sucos de frutas vibrantes", temp: 1, intn: 2, lum: 1, classico: -1 },
+    { label: "Espumante ou drinks autorais, sofisticados", temp: 0, intn: 1, lum: 1, classico: 0 }
   ]},
   { text: "Você se identifica mais com:", options: [
     { label: "Tradição, peças que passam de geração", temp: 0, intn: 0, lum: 0, classico: 2 },
     { label: "Inovação, o que há de mais atual", temp: 0, intn: 0, lum: 0, classico: -2 },
-    { label: "Um equilíbrio entre os dois", temp: 0, intn: 0, lum: 0, classico: 0 }
+    { label: "Um equilíbrio entre os dois", temp: 0, intn: 0, lum: 0, classico: 0 },
+    { label: "Praticidade e funcionalidade acima de tudo", temp: 0, intn: -1, lum: 0, classico: 0 }
   ]},
   { text: "No fim de semana, você prefere:", options: [
     { label: "Ficar em casa, ambiente intimista", temp: 1, intn: -1, lum: -1, classico: 0 },
     { label: "Sair, estar em movimento e contato social", temp: 0, intn: 1, lum: 1, classico: 0 },
-    { label: "Estar na natureza, ao ar livre", temp: -1, intn: 0, lum: 1, classico: 0 }
+    { label: "Estar na natureza, ao ar livre", temp: -1, intn: 0, lum: 1, classico: 0 },
+    { label: "Explorar exposições, livrarias, lugares culturais", temp: 0, intn: 1, lum: 0, classico: 0 }
   ]},
   { text: "Qual textura você prefere tocar?", options: [
     { label: "Couro, linho, madeira bruta", temp: 1, intn: 0, lum: -1, classico: 1 },
     { label: "Vidro, metal polido, cerâmica lisa", temp: -1, intn: 0, lum: 1, classico: -1 },
-    { label: "Veludo e tecidos macios", temp: 1, intn: 1, lum: -1, classico: 0 }
+    { label: "Veludo e tecidos macios", temp: 1, intn: 1, lum: -1, classico: 0 },
+    { label: "Pedra e cimento queimado, superfícies foscas", temp: -1, intn: 0, lum: 0, classico: -1 }
   ]},
   { text: "Se sua personalidade fosse uma estação:", options: [
     { label: "Outono — quente, denso, nostálgico", temp: 2, intn: 0, lum: -1, classico: 1 },
     { label: "Verão ou inverno — claro, definido", temp: -1, intn: 1, lum: 1, classico: -1 },
-    { label: "Primavera — leve e florida", temp: 0, intn: 1, lum: 1, classico: 0 }
+    { label: "Primavera — leve e florida", temp: 0, intn: 1, lum: 1, classico: 0 },
+    { label: "Inverno — friíssimo, introspectivo, sóbrio", temp: -2, intn: -1, lum: -1, classico: 0 }
   ]},
   { text: "Você prefere ambientes que parecem:", options: [
     { label: "Vividos, cheios de história e objetos", temp: 0, intn: 1, lum: -1, classico: 1 },
     { label: "Limpos, com poucos elementos à vista", temp: 0, intn: -1, lum: 1, classico: -1 },
-    { label: "Aconchegantes e coloridos, sem excesso", temp: 1, intn: 0, lum: 0, classico: 0 }
+    { label: "Aconchegantes e coloridos, sem excesso", temp: 1, intn: 0, lum: 0, classico: 0 },
+    { label: "Cenográficos e dramáticos, com personalidade forte", temp: 0, intn: 2, lum: -1, classico: 0 }
   ]},
   { text: "Em decoração, você confia mais em:", options: [
     { label: "Combinações clássicas que sempre funcionam", temp: 0, intn: -1, lum: 0, classico: 2 },
     { label: "Misturas inusitadas e ousadas", temp: 0, intn: 2, lum: 0, classico: -2 },
-    { label: "Tendências do momento", temp: -1, intn: 1, lum: 1, classico: -1 }
+    { label: "Tendências do momento", temp: -1, intn: 1, lum: 1, classico: -1 },
+    { label: "Na recomendação de quem entende do assunto", temp: 0, intn: 0, lum: 0, classico: 0 }
   ]},
   { text: "Qual desses materiais te representa mais?", options: [
     { label: "Terracota, barro, pedra natural", temp: 1, intn: 0, lum: -1, classico: 1 },
     { label: "Aço, vidro, laca brilhante", temp: -1, intn: 0, lum: 1, classico: -1 },
-    { label: "Fibras naturais, palha, linho cru", temp: 1, intn: 0, lum: 0, classico: 1 }
+    { label: "Fibras naturais, palha, linho cru", temp: 1, intn: 0, lum: 0, classico: 1 },
+    { label: "Mármore e superfícies nobres", temp: 0, intn: 0, lum: 1, classico: 0 }
   ]},
   { text: "Você se sente mais você em ambientes:", options: [
     { label: "Quentes e abraçadores", temp: 2, intn: 0, lum: -1, classico: 0 },
     { label: "Frescos e arejados", temp: -2, intn: 0, lum: 1, classico: 0 },
-    { label: "Vibrantes e estimulantes", temp: 0, intn: 2, lum: 0, classico: -1 }
+    { label: "Vibrantes e estimulantes", temp: 0, intn: 2, lum: 0, classico: -1 },
+    { label: "Silenciosos e minimalistas", temp: 0, intn: -2, lum: 0, classico: -1 }
   ]},
   { text: "Por fim: se sua casa fosse elogiada, você preferiria ouvir:", options: [
     { label: "\"Que lugar acolhedor e cheio de alma\"", temp: 1, intn: 1, lum: -1, classico: 1 },
     { label: "\"Que espaço elegante e atemporal\"", temp: 0, intn: -1, lum: 1, classico: 0 },
-    { label: "\"Que ambiente surpreendente e original\"", temp: -1, intn: 2, lum: 0, classico: -1 }
+    { label: "\"Que ambiente surpreendente e original\"", temp: -1, intn: 2, lum: 0, classico: -1 },
+    { label: "\"Que casa prática e bem resolvida\"", temp: 0, intn: -1, lum: 0, classico: 0 }
   ]}
 ];
 
